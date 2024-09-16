@@ -1,14 +1,13 @@
 import  { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-const targetDate = new Date("2024-09-12T00:00:00");
-
-const Counter = () => {
+const Counter = ({ startDate }) => {
   const [timeElapsed, setTimeElapsed] = useState({ days: 0, hours: 0, minutes: 0 });
 
   useEffect(() => {
     const updateTimeElapsed = () => {
       const now = new Date();
-      const diff = now - targetDate;
+      const diff = now - startDate;
 
       const totalMinutes = Math.floor(diff / (1000 * 60));
       const totalHours = Math.floor(totalMinutes / 60);
@@ -27,13 +26,17 @@ const Counter = () => {
     const intervalId = setInterval(updateTimeElapsed, 60000); // Atualiza a cada minuto
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [startDate]);
 
   return (
     <span>
       {timeElapsed.days} dias {timeElapsed.hours}:{timeElapsed.minutes} horas
     </span>
   );
+};
+
+Counter.propTypes = {
+  startDate: PropTypes.instanceOf(Date).isRequired,
 };
 
 export default Counter;
